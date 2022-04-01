@@ -59,4 +59,28 @@ describe('gitty routes', () => {
       message: 'Signed out successfully!',
     });
   });
+
+  it('allows a signed in user to create a post with a 252 limit', async () => {
+    const agent = request.agent(app);
+
+    await UserService.create({
+      username: 'fake_github_user',
+      email: 'not-real@example.com',
+      password: 'password',
+    });
+    await agent.post('/api/v1/github/dashboard').send({
+      username: 'fake_github_user',
+      email: 'not-real@example.com',
+      password: 'password',
+    });
+
+    const post = {
+      title: 'imagine this is 255 characters',
+    };
+    const res = await request(app).post('api/v1/posts').send(post);
+    expect(res.body).toEqual({
+      id: expect.any(String),
+      ...post,
+    });
+  });
 });
