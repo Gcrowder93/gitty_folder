@@ -85,20 +85,25 @@ describe('gitty routes', () => {
     });
   });
 
-  it('should login and redirect user to posts', async () => {
-    const res = await request
-      .agent(app)
-      .get('/api/v1/github/login/callback?code=42')
-      .redirects(1);
+  it('shows user all posts', async () => {
+    const agent = request.agent(app);
 
-    expect(res.status).toEqual(200);
-    expect(res.body).toEqual({
-      id: expect.any(String),
+    await UserService.create({
       username: 'fake_github_user',
       email: 'not-real@example.com',
-      // password: 'password',
-      iat: expect.any(Number),
-      exp: expect.any(Number),
     });
+
+    // let res = await agent.get('/api/v1/posts');
+    // expect(res.status).toEqual(401);
+    await agent.get('/api/v1/github/login/callback?code=42').redirects(1);
+
+    await agent
+      .post('/api/v1/github/dashboard')
+      .send({ username: 'fake_github_user', email: 'not-real@example.com' });
+
+    res = await agent.get('/api/v1/posts');
+    expect(res.body).toEqual([
+      { id: expect.any(String), title: 'this is post' },
+    ]);
   });
 });
