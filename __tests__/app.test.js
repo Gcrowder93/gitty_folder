@@ -3,7 +3,6 @@ const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
 const UserService = require('../lib/services/UserService');
-
 jest.mock('../lib/utils/github');
 
 describe('gitty routes', () => {
@@ -33,6 +32,7 @@ describe('gitty routes', () => {
       id: expect.any(String),
       username: 'fake_github_user',
       email: 'not-real@example.com',
+      // password: 'password',
       iat: expect.any(Number),
       exp: expect.any(Number),
     });
@@ -44,13 +44,13 @@ describe('gitty routes', () => {
     await UserService.create({
       username: 'fake_github_user',
       email: 'not-real@example.com',
-      password: 'password',
+      // password: 'password',
     });
 
     await agent.post('/api/v1/github/dashboard').send({
       username: 'fake_github_user',
       email: 'not-real@example.com',
-      password: 'password',
+      // password: 'password',
     });
 
     const res = await agent.delete('/api/v1/github/dashboard');
@@ -66,12 +66,12 @@ describe('gitty routes', () => {
     await UserService.create({
       username: 'fake_github_user',
       email: 'not-real@example.com',
-      password: 'password',
+      // password: 'password',
     });
     await agent.post('/api/v1/github/dashboard').send({
       username: 'fake_github_user',
       email: 'not-real@example.com',
-      password: 'password',
+      // password: 'password',
     });
 
     const post = {
