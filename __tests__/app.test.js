@@ -60,7 +60,7 @@ describe('gitty routes', () => {
     });
   });
 
-  it('allows a signed in user to create a post with a 252 limit', async () => {
+  it('allows a signed in user to create a post with a 255 limit', async () => {
     const agent = request.agent(app);
 
     await UserService.create({
