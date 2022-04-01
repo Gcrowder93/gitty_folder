@@ -77,7 +77,7 @@ describe('gitty routes', () => {
     const post = {
       title: 'imagine this is 255 characters',
     };
-    const res = await request(app).post('api/v1/posts').send(post);
+    const res = await request(app).post('/api/v1/posts').send(post);
     expect(res.body).toEqual({
       id: expect.any(String),
       ...post,
