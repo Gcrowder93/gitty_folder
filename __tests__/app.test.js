@@ -3,6 +3,7 @@ const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
 const UserService = require('../lib/services/UserService');
+const { agent } = require('supertest');
 jest.mock('../lib/utils/github');
 
 describe('gitty routes', () => {
@@ -82,5 +83,24 @@ describe('gitty routes', () => {
       id: expect.any(String),
       ...post,
     });
+  });
+
+  it('shows user all posts', async () => {
+    const agent = request.agent(app);
+
+    await UserService.create({
+      username: 'fake_github_user',
+      email: 'not-real@example.com',
+    });
+
+    let res = await agent.get('/api/v1/posts');
+    expect(res.status).toEqual(401);
+
+    await agent
+      .post('/api/v1/github/dashboard')
+      .send({ username: 'fake_github_user', email: 'not-real@example.com' });
+
+    res = await agent.get('/api/v1/posts');
+    expect(res.status).toEqual(200);
   });
 });
