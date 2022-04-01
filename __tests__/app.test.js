@@ -47,15 +47,13 @@ describe('gitty routes', () => {
       password: 'password',
     });
 
-    await agent
-      .post('/api/v1/github/')
-      .send({
-        username: 'fake_github_user',
-        email: 'not-real@eample.com',
-        password: 'password',
-      });
+    await agent.post('/api/v1/github/dashboard').send({
+      username: 'fake_github_user',
+      email: 'not-real@example.com',
+      password: 'password',
+    });
 
-    const res = await agent.delete('/api/v1/github/');
+    const res = await agent.delete('/api/v1/github/dashboard');
     expect(res.body).toEqual({
       success: true,
       message: 'Signed out successfully!',
