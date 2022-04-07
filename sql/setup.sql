@@ -13,7 +13,7 @@ DROP TABLE IF EXISTS github_users;
 CREATE TABLE github_users (
   id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   username TEXT NOT NULL,
-  email TEXT NOT NULL
+  email TEXT
 );
 
 INSERT INTO post(title)

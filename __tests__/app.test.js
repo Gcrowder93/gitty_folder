@@ -23,20 +23,21 @@ describe('gitty routes', () => {
     );
   });
 
-  it('should login and redirect users to /api/v1/github/dashboard', async () => {
-    const req = await request
+  it('should login and redirect users to /api/v1/github/login', async () => {
+    const res = await request
       .agent(app)
       .get('/api/v1/github/login/callback?code=42')
       .redirects(1);
+    expect(res.req.path).toEqual('/api/v1/posts');
 
-    expect(req.body).toEqual({
-      id: expect.any(String),
-      username: 'fake_github_user',
-      email: 'not-real@example.com',
-      // password: 'password',
-      iat: expect.any(Number),
-      exp: expect.any(Number),
-    });
+    // expect(req.body).toEqual({
+    //   id: expect.any(String),
+    //   username: 'fake_github_user',
+    //   email: 'not-real@example.com',
+    //   // password: 'password',
+    //   iat: expect.any(Number),
+    //   exp: expect.any(Number),
+    // });
   });
 
   it('signs out user/deletes cookie', async () => {
