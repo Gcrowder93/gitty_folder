@@ -92,9 +92,6 @@ describe('gitty routes', () => {
       username: 'fake_github_user',
       email: 'not-real@example.com',
     });
-
-    // let res = await agent.get('/api/v1/posts');
-    // expect(res.status).toEqual(401);
     await agent.get('/api/v1/github/login/callback?code=42').redirects(1);
 
     await agent
@@ -103,7 +100,7 @@ describe('gitty routes', () => {
 
     res = await agent.get('/api/v1/posts');
     expect(res.body).toEqual([
-      { id: expect.any(String), title: 'this is post' },
+      { id: expect.any(String), title: 'imagine this is 255 characters' },
     ]);
   });
 });
